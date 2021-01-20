@@ -40,3 +40,6 @@ This package was created using:
 ## TODO
 
 - Better validation errors (more context to what went wrong)
+- Json5/json config source
+- Toml config source
+- Combine sources into a single object option
