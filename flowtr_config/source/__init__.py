@@ -1,1 +1,1 @@
-from .source import ConfigSource, EnvironmentConfigSource
+from .source import ConfigSource, EnvironmentConfigSource, YamlConfigSource

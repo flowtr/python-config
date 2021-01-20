@@ -10,7 +10,8 @@ def suite():
     suite.addTest(ValidationTest("test_email"))
     suite.addTest(ValidationTest("test_url"))
     suite.addTest(ConfigValidationTest("test_email"))
-    suite.addTest(ConfigTest("test_config"))
+    suite.addTest(ConfigTest("test_config_env"))
+    suite.addTest(ConfigTest("test_config_yaml"))
     return suite
 
 

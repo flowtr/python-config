@@ -58,7 +58,7 @@ class Validator(Generic[T]):
 
     def parse(self, value: T) -> Union[T, None]:
         if all(re.match(regex, value) is not None for regex in self.regex) and all(
-            v() is True for v in self.custom
+            v(value) is True for v in self.custom
         ):
             return value
         else:
@@ -114,10 +114,13 @@ class ValidationField(Field, Generic[F]):
         if isinstance(range, dict):
             self.validator.range(**range)
         if isinstance(one_of, list):
-            self.validator.one_of(**one_of)
+            self.validator.one_of(one_of)
 
     def parse(self, value):
-        self.validator.validateOrError(value, ValidationError(f"{self.field_name} has an invalid value: {value}"))
+        self.validator.validateOrError(
+            value,
+            error=ValidationError(f"{self.field_name} has an invalid value: {value}"),
+        )
         return super().parse(value)
 
     def get(_, field_value):

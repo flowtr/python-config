@@ -16,7 +16,7 @@ class Config(Generic[T]):
         self,
         model: Type[T],
         default: T = None,
-        sources=None,
+        sources: List[ConfigSource] = None,
         validator: Validator = None,
     ) -> None:
         self.sources = sources or [EnvironmentConfigSource(model=model)]

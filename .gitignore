@@ -1,5 +1,7 @@
 .vscode
 __pycache__
 *.env*
+*.yaml
 !tests.env
+!tests.yaml
 dist/

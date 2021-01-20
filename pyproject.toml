@@ -11,6 +11,7 @@ python = ">=3.7,<4.0"
 typed-models = ">=0.2.3"
 colour-runner = ">=0.1.1"
 firstclass-dotenv = ">=0.0.6"
+PyYAML = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
@@ -22,3 +23,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poe.tasks]
 test = "python3 -m tests.main"
 lint = "black . --check"
+format = "black ."
