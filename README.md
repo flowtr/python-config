@@ -24,6 +24,8 @@ print(config.get().username) # .user can autocomplete in your IDE as username
 
 ```
 
+More documentation coming soon.
+
 ## Built With
 
 This package was created using:
