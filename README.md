@@ -36,3 +36,7 @@ This package was created using:
 - unittest
 - firstclass-dotenv
 - typed-models
+
+## TODO
+
+- Better validation errors (more context to what went wrong)

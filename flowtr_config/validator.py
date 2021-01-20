@@ -35,7 +35,25 @@ class Validator(Generic[T]):
         return self
 
     def length(self, min: float = 0, max: float = float("inf")):
+        """
+        Make sure the string is a specified length within a range.
+        """
         self.custom.append(lambda x: len(x) in range(min, max))
+        return self
+
+    def range(self, min: float = 0, max: float = float("inf")):
+        """
+        Make sure the value is within a specific range. This is used on float and int fields.
+        """
+        self.custom.append(lambda x: x in range(min, max))
+        return self
+
+    def one_of(self, values: List[str] = []):
+        """
+        Make sure the value is one of the specified validation values.
+        Eg. Validator().one_of(["joe", "mama"])
+        """
+        self.custom.append(lambda x: x in values)
         return self
 
     def parse(self, value: T) -> Union[T, None]:
@@ -51,10 +69,17 @@ class Validator(Generic[T]):
             v(value) is True for v in self.custom
         )
 
-    def validateOrError(self, value: T) -> Union[Literal[True], None]:
+    def validateOrError(
+        self, value: T, error: Exception = None
+    ) -> Union[Literal[True], None]:
         if not self.validate(value):
-            raise ValidationError(
-                {"value": value, "regex": self.regex, "custom": self.custom}
+            raise error or ValidationError(
+                {
+                    "value": value,
+                    "regex": self.regex,
+                    "custom": self.custom,
+                    "message": error,
+                }
             )
         return True
 
@@ -72,9 +97,13 @@ class ValidationField(Field, Generic[F]):
         email=False,
         url: Union[Literal[False], Dict] = False,
         length: Union[Literal[False], Dict] = False,
+        range: Union[Literal[False], Dict] = False,
+        one_of: Union[Literal[False], List[str]] = False,
     ):
         super().__init__()
         self.parent = parent
+        for k, v in parent.__dict__.items():
+            setattr(self, k, v)
         self.validator = Validator()
         if email == True:
             self.validator.email()
@@ -82,9 +111,13 @@ class ValidationField(Field, Generic[F]):
             self.validator.url(**url)
         if isinstance(length, dict):
             self.validator.length(**length)
+        if isinstance(range, dict):
+            self.validator.range(**range)
+        if isinstance(one_of, list):
+            self.validator.one_of(**one_of)
 
     def parse(self, value):
-        self.validator.validateOrError(value)
+        self.validator.validateOrError(value, ValidationError(f"{self.field_name} has an invalid value: {value}"))
         return super().parse(value)
 
     def get(_, field_value):
