@@ -1,3 +1,4 @@
+from flowtr_config.validator import Validator
 from typing import Generic, List, Type, TypeVar
 from typed_models.base import Model
 from flowtr_config.source.source import ConfigSource, EnvironmentConfigSource
@@ -9,16 +10,19 @@ class Config(Generic[T]):
     sources: List[ConfigSource]
     value: T
     model: Type[T]
+    validator: Validator
 
     def __init__(
         self,
         model: Type[T],
         default: T = None,
         sources=None,
+        validator: Validator = None,
     ) -> None:
         self.sources = sources or [EnvironmentConfigSource(model=model)]
         self.model = model
         self.value = default
+        self.validator = validator
 
     def read(self, source=0, **args):
         self.sources[source].read(**args)

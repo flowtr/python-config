@@ -1,5 +1,5 @@
 from tests.config import ConfigTest
-from tests.validation import ValidationTest
+from tests.validation import ConfigValidationTest, ValidationTest
 from colour_runner.runner import ColourTextTestRunner
 
 import unittest
@@ -8,6 +8,7 @@ import unittest
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(ValidationTest("test_email"))
+    suite.addTest(ConfigValidationTest("test_email"))
     suite.addTest(ConfigTest("test_config"))
     return suite
 
