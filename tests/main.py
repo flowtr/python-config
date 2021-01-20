@@ -8,6 +8,7 @@ import unittest
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(ValidationTest("test_email"))
+    suite.addTest(ValidationTest("test_url"))
     suite.addTest(ConfigValidationTest("test_email"))
     suite.addTest(ConfigTest("test_config"))
     return suite

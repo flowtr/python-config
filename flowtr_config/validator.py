@@ -24,17 +24,19 @@ class Validator(Generic[T]):
         self.regex.append(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
         return self
 
-    def url(self, protocols=["https", "http"], credentials=False):
+    def url(self, protocols: List[str] = ["https", "http"], credentials=False):
         """
         Validates this string as a valid url with specified protocols (defaults to: ["https", "http"]).
         """
         # TODO: implement credentials
         self.regex.append(
-            rf"{protocols.join('|')}:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*"
+            rf"{'|'.join(protocols)}:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
         )
+        return self
 
     def length(self, min: float = 0, max: float = float("inf")):
         self.custom.append(lambda x: len(x) in range(min, max))
+        return self
 
     def parse(self, value: T) -> Union[T, None]:
         if all(re.match(regex, value) is not None for regex in self.regex) and all(

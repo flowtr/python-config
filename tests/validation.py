@@ -9,6 +9,14 @@ class ValidationTest(unittest.TestCase):
     def test_email(self):
         self.assertEqual(Validator[str]().email().validate("theo@mail.toes.tech"), True)
 
+    def test_url(self):
+        self.assertEqual(
+            Validator[str]()
+            .url()
+            .validate("https://joe.example.test.com/joe?key=value&username=joe"),
+            True,
+        )
+
 
 class User(Model):
     email = ValidationField(StringField(), email=True)
